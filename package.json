@@ -1,0 +1,9 @@
+{
+  "name": "lapisby",
+  "devDependencies": {
+    "stylus-supremacy": "^2.12.7"
+  },
+  "dependencies": {
+    "short-uuid": "^3.1.1"
+  }
+}

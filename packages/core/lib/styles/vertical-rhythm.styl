@@ -1,0 +1,80 @@
+@import 'variables'
+@import 'functions'
+
+/*
+Calculate a multiple of our defined micro base as a unit-less number
+
+Usage:
+h1
+  font-size: 2rem
+  -unitless-rhythm(4) -> 4 * 0.25 / 2
+*/
+-unitless-rhythm($multiply = --base-minor-multiply, $base = --base-minor)
+  (($multiply * remove-unit($base)) / remove-unit(@font-size))
+
+/* 
+Line-height rhythm
+Calculates unit-less line-height based on the font-size
+
+ Usage:
+ h1
+   font-size: 2rem
+   line-height-rhythm()
+*/
+-line-height-baseline-rhythm($baseline = --baseline)
+  line-height: -strip-unit(ceil((@font-size / $baseline)) * ($baseline / @font-size))
+
+-line-height($line-height = --base-line-height)
+  line-height: $line-height
+
+-line-height-rhythm($line-height = --base-line-height, $base = --base-minor)
+  height = $line-height * @font-size // total height in rem
+  line-height: -strip-unit(ceil((height / $base)) * ($base / @font-size))
+
+/*
+Margin rhythm
+Adds margin-bottom and/or margin-top in multiplies of micro base.
+*/
+-margin-rhythm($bottom = 1, $top = null, $base = --base-minor)
+  if ($top != null)
+    m-bottom = $bottom
+    m-top = $top
+  else
+    m-bottom = $bottom
+
+  margin-bottom: $base * m-bottom
+
+  if ($top != null)
+    margin-top: $base * m-top
+
+/* 
+Padding rhythm
+Adds padding-bottom and padding-top in multiplies of micro base. */
+-padding-rhythm($top = 0.5, $bottom = $top, $base = --base-minor)
+  padding-top: $base * $top
+  padding-bottom: $base * $bottom
+
+/*
+Image rhythm
+Calculates the margin-bottom for an image of specified height to line-up with your baseline.
+*/
+-image-rhythm($height)
+  image-height = (remove-unit($height) / remove-unit(--base-font-px))
+  units = (image-height / --base-px)
+  margin = (ceil(units) - units) * --base-minor
+  margin-bottom: margin // in rem
+
+/*
+Padding and margin utilities
+*/
+-padding-sides($left = 0.5, $right = $left, $base = --base-minor)
+  padding-left: $base * $left
+  padding-right: $base * $right
+
+-pad($multiply)
+  -padding-sides($multiply)
+  -padding-rhythm($multiply)
+
+-margin-sides($left = --gutter, $right = $left)
+  margin-left: $left
+  margin-right: $right

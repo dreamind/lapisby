@@ -1,0 +1,100 @@
+// https://github.com/edwardtufte/tufte-css/blob/gh-pages/tufte.css
+// https://rstudio.github.io/tufte/
+
+@import 'variables'
+@import 'typography'  
+
+--note-treshold-width ?= 600px
+--note-gutter-height ?= --gutter
+--note-gutter-width ?= --gutter
+
+article
+  position: relative
+  padding: 0
+
+article > *
+  width: --golden-ratio
+  position: relative
+  box-sizing: border-box
+
+article > *:last-child, article > div > *:last-child, article > p > *:last-child, .note > *:last-child
+  margin-bottom: 0
+
+article > *:first-child, article > div > *:first-child, article > p > *:first-child, .note > *:first-child
+  margin-top: 0
+
+// Side note
+.note
+  font-size: (--base-font-size / --major-second)
+  -line-height-rhythm(--minor-third)
+  vertical-align: baseline
+  position: relative
+  float: right
+  clear: right
+  width: 'calc(%s - %s)' % (--inverse-golden-ratio --note-gutter-width)
+  margin-top: 0
+  margin-bottom: --note-gutter-height
+
+.note > code[class*="language-"], pre[class*="language-"]
+  font-size: (--base-font-size / --perfect-fourth) !important
+  padding: --base-minor * 2 !important
+
+.sidenote > *:first-child
+  margin-top: 0
+
+.sidenote
+  counter-increment: sidenote-counter
+
+.sidenote-number:after, .sidenote:before
+  position: relative
+  vertical-align: baseline
+
+.sidenote-number:after
+  content: counter(sidenote-counter)
+  font-size: --subsup-size
+  top: -(--base-font-size / 2)
+
+.sidenote:before
+  content: counter(sidenote-counter) ' '
+  font-size: --subsup-size
+
+@media screen and (max-width: --note-treshold-width)
+  .sidenote, .marginnote
+    display: none
+  article > *
+    width: 100%
+// Structure
+
+.fullwidth
+  width: 100%
+
+// Image
+img
+  max-width: 100%
+  clear: both
+
+pre
+  overflow: scroll
+
+code[class*="language-"]
+  font-size: --inline-code-size
+  color: #1b8593 !important
+
+// checklist
+.checklist
+  padding-left: 20px
+  list-style: none
+
+.checklist li
+  margin-bottom: 10px
+
+.checklist libefore
+  font-family: FontAwesome
+  font-size: 11px
+  content: '\f096'
+  margin: 0 8px 0 -15px
+
+// https://rstudio.github.io/tufte/
+span.newthought
+  font-variant: small-caps
+

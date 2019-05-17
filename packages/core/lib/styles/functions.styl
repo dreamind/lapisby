@@ -1,0 +1,16 @@
+
+// Stringify the given arg
+-string($arg)
+  type($arg) + ' ' + $arg
+
+// Check if value is an integer
+-is-int($number)
+  ($number is a 'unit' && floor(abs($number)) == abs($number)) ? true : false
+
+// Returns a number without a unit. For example 16px becomes 16
+-strip-unit($number)
+  remove-unit($number)
+
+// Returns an em/rem value. For example 24px becomes 1.5em
+-to-relative($target, $context)
+  -strip-units(($target / $context)) + 0em

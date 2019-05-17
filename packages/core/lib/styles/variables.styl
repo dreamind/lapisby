@@ -1,0 +1,41 @@
+// https://github.com/ianrose/typesettings/
+// https://gist.github.com/declandewet/5697856
+
+// Default measurement is set to rem
+@import 'font-stacks'
+@import 'modular-scale'
+
+// The config variables have default values that can be adjusted.
+// Main font styles
+--font-sans ?= --font-default-sans
+--font-serif ?= --font-default-serif
+--font-mono ?= --font-default-mono
+--font-heading ?= --font-sans
+--font-italic ?= --font-serif
+// base font and baseline
+--base-font-px ?= 16px // default font size in pixel
+--base-font-size ?= 1rem
+--base-line-height ?= --perfect-fifth
+// Major baseline (default 24px, 1.5rem)
+--baseline ?= --perfect-fifth * --base-font-size // baseline in rem
+--baseline-double = --baseline * 2
+// The minor base = smallest vertical rhythm unit.
+// Margin, padding, and line-height can be set as multiples of this
+// 6px is chosen allows more fine-grained control
+--base-minor-px ?= 6px
+// Multiplier for --base-px to get to the --base-line-height in pixel
+--base-minor-multiply ?= remove-unit(--base-font-px * --base-line-height / --base-minor-px) // 4
+--base-minor ?= remove-unit((--base-minor-px / (remove-unit(--baseline) * --base-font-px))) + 0rem // in rem
+--half-base-minor = (--base-minor / 2)
+// structural spacing
+--gutter ?= 3%
+// body
+--body-font-family ?= --font-sans
+--body-font-weight ?= 400
+--body-padding ?= --baseline-double --baseline --baseline-double --baseline-double
+// heading
+--heading-font-family ?= --font-heading
+--heading-font-weight ?= bold
+--heading-line-height ?= 1.5
+// screen size
+--body-max-width ?= 1200px

@@ -1,0 +1,148 @@
+@import 'variables'
+@import 'modular-scale'
+@import 'vertical-rhythm'
+
+--h4-size = --major-second * --base-font-size
+--h3-size = --major-third * --base-font-size
+--h2-size = --perfect-fifth * --base-font-size
+--h1-size = --octave * --base-font-size
+--epigraph-size = --minor-third * --base-font-size
+--table-size = (--base-font-size / --major-third)
+--subsup-size = (--base-font-size / --perfect-fifth)
+--footer-size = (--base-font-size / --major-third)
+--block-indent = --base-font-size * 2
+--inline-code-size = 0.9em
+// Colors
+--body-bgcolor ?= darken(white, 1%)
+--body-color ?= hsla(0, 0%, 0%, 0.8)
+--heading-color ?= inherit
+// link colors
+--link-color ?= #0080a5
+--link-color-visited ?= #663399
+--link-color-hover ?= #c00
+--inline-code-color = 0.9em
+
+html
+  font-size: 100%
+  margin: 0
+
+body
+  max-width: --body-max-width
+  margin: 0 auto
+  padding: --body-padding
+  font-family: --body-font-family
+  font-weight: --body-font-weight
+  font-size: --base-font-size
+  line-height: --base-line-height
+  color: --body-color
+  background-color: --body-bgcolor
+  counter-reset: sidenote-counter
+
+p
+  padding: 0
+  vertical-align: baseline
+  -margin-rhythm(3, 3)
+
+// https://usabilitygeek.com/hyperlink-usability-guidelines-usable-links/
+// https://www.nngroup.com/articles/guidelines-for-visualizing-links/
+a
+  color: --link-color
+  text-decoration: none
+  word-break: break-all
+
+  &:hover
+    color: --link-color-hover
+
+  &:visited
+    color: --link-color-visited
+
+// Headings
+h1, h2, h3, h4, h5, h6
+  font-family: --heading-font-family
+  font-weight: --heading-font-weight
+  margin: 0
+
+h1, .title
+  font-size: --h1-size
+  font-weight: bold
+  -line-height-rhythm(--major-second)
+  -margin-rhythm(4)
+
+.epigraph
+  font-family: --font-italic
+  font-size: --epigraph-size
+  -line-height-rhythm(--perfect-fourth)
+  -margin-rhythm(6, 4)
+
+blockquote
+  font-family: --font-serif
+  margin-top: 0
+  margin-left: --block-indent
+  padding-right: --block-indent
+
+.epigraph, blockquote
+  font-style: italic
+
+  > p
+    -margin-rhythm(4, 4)
+
+  .footer
+    display: block
+    padding-left: --inverse-golden-ratio
+    font-size: --footer-size
+    font-style: normal
+    text-align: right
+
+h2
+  font-size: --h2-size
+  -line-height-rhythm(--minor-third)
+  -margin-rhythm(4, 5)
+
+h3
+  font-size: --h3-size
+  font-style: italic
+  -line-height-rhythm(--major-third)
+  -margin-rhythm(3, 4)
+
+h4
+  font-size: --h4-size
+  font-weight: bold
+  -line-height-rhythm(--perfect-fourth)
+  -margin-rhythm(2, 3)
+
+h5, h6
+  font-size: --base-font-size
+  font-weight: bold
+  -line-height-rhythm()
+  -margin-rhythm(2, 2)
+
+table
+  font-family: --font-sans
+  font-size: --table-size
+  -line-height-rhythm(--baseline)
+
+ul, ol
+  list-style-position: outside
+  -margin-rhythm(3, 3)
+  padding-left: --block-indent
+
+  > li
+    margin: 0 0 --half-base-minor 0
+
+article * ul, ol > li
+  ul, ol
+    -margin-rhythm(0, 0)
+
+  ul + p
+    -margin-rhythm(3, 3)
+
+.callout, .boxed
+  background-color: darken(white, 8%)
+  border: 1px solid darken(white, 15%)
+  padding: (--base-font-size / 2)
+
+.math
+  -margin-rhythm(4, 4)
+
+.inlineMath
+  -margin-rhythm(2, 2)
