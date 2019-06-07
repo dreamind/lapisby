@@ -1,5 +1,5 @@
 const fs = require('fs')
-const { extend } = require('lodash')
+const { extend, get, each, keys } = require('lodash')
 const unified = require('unified')
 const yaml = require('yaml').parse
 const pug = require('pug')
@@ -13,26 +13,91 @@ const remarkFront = require('remark-frontmatter')
 const remarkFrontExtract = require('remark-extract-frontmatter')
 const remarkAttr = require('remark-attr')
 const remarkEmoji = require('remark-emoji')
-const remarkSpans = require('remark-inline')
-const inspector = require('../remark/remark-inspector')
-const remarkCustom = require('../remark/remark-custom')
+const remarkSpans = require('@lapisby/remark-inline')
+const remarkCustom = require('@lapisby/remark-custom')
+const remarkPrism = require('@lapisby/remark-prism')
 const remarkLapisby = require('../remark/remark-lapisby')
-const remarkPrism = require('../remark/remark-prism')
+const inspector = require('../remark/remark-inspector')
+
 // const remarkHighlightX = require('../remark/remark-ext-code')
 
 const BIB_MARKER = '<h2>References</h2>'
 
 class MarkdownProcessor {
-  constructor() {}
+  constructor() {
+    this.confs = {}
+  }
+
+  styleHandler({ frontmatter, styles }) {
+    const userStyles = frontmatter.styles
+    if (!userStyles) {
+      return
+    }
+    userStyles.forEach(s => {
+      styles.add(s)
+    })
+  }
+
+  scriptHandler({ frontmatter, scripts }) {
+    const userScripts = frontmatter.scripts
+    if (!userScripts) {
+      return
+    }
+    userScripts.forEach(s => {
+      scripts.add(s)
+    })
+  }
+
+  mathHandler({ hasMath, styles }) {
+    if (hasMath) {
+      // styles.add('../../../node_modules/katex/dist/katex.css')
+      
+      let style = get(this.confs.lapisby, 'ext.katex.cdn.css')
+      if (style) {
+        styles.add(style)
+      }
+    }
+  }
+
+  codeHandler({ hasCode, codeTheme, styles }) {
+    if (hasCode) {
+      styles.add('../../../node_modules/' + codeTheme)
+      // link(href="../../../node_modules/prismjs/themes/prism-dark.css", rel="stylesheet")
+      // link(href="../../../node_modules/prism-themes/themes/prism-xonokai.css", rel="stylesheet")
+    }
+  }
+
+  themeHandler({ theme, styles }) {
+    if (theme && styles) {
+      styles.add(theme + '/fonts.css')
+      styles.add(theme + '/index.styl')
+    }
+  }
+
+  templateHandler({ theme, styles }) {
+    if (theme && styles) {
+      styles.add(theme + '/fonts.css')
+      styles.add(theme + '/index.styl')
+    }
+  }
+
+  bibiliographyHandler({ theme, styles }) {
+    if (theme && styles) {
+      styles.add(theme + '/fonts.css')
+      styles.add(theme + '/index.styl')
+    }
+  }
 
   async generate(contents, confs = {}) {
     let pugConf = confs.pug || {}
     let parcelConf = confs.parcel || {}
     let lapisbyConf = confs.lapisby || {}
+    this.confs = confs
 
     let data = {
       scripts: new Set(),
       styles: new Set(),
+      components: {},
       template: null,
       theme: null,
       codeTheme: null,
@@ -65,26 +130,38 @@ class MarkdownProcessor {
     let html
     let {
       template,
-      theme, codeTheme,
+      theme,
+      codeTheme,
       title = 'Untitled',
       bibliography,
       frontmatter = {},
       scripts,
       styles,
-      hasCode, hasMath
+      hasCode,
+      hasMath,
+      components
     } = data
-    // console.log(data, styles)
-    console.log('hasCode, hasMath', hasCode, hasMath)
-    if (hasCode) {
-      // codeTheme = codeTheme
-      styles.add('../../../node_modules/' + codeTheme)
-      //link(href="../../../node_modules/prismjs/themes/prism-dark.css", rel="stylesheet")
-      // link(href="../../../node_modules/prism-themes/themes/prism-xonokai.css", rel="stylesheet")
+    
+    if (frontmatter) {
+      this.styleHandler({ frontmatter, styles })
+      this.scriptHandler({ frontmatter, scripts })
     }
-    if (hasMath) {
-      // codeTheme = codeTheme
-      styles.add('../../../node_modules/katex/dist/katex.css')
-    }
+    this.codeHandler({ hasCode, codeTheme, styles })
+    this.mathHandler({ hasMath, styles })
+    this.themeHandler({ theme, styles })
+
+    each (keys(components), function (component) {
+      const source = get(lapisbyConf, ['ext', component, 'cdn'])
+      const script = get(source, 'js')
+      const style = get(source, 'css')
+      if (script) {
+        scripts.add(script)
+      }
+      if (style) {
+        styles.add(style)
+      }    
+    })
+  
     if (lapisbyConf.templateEnabled && template) {
       const compiled = pug.compile(fs.readFileSync(template).toString(), {
         basedir: confs.basedir,

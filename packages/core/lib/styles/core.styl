@@ -1,7 +1,11 @@
 @import 'colors.css/css/colors.css'
 
+--outlined-color ?= grey
+--shaded-color ?= lightgray
+
 .plotly-wrap
-  height 500px
+  box-sizing: content-box
+  height: 500px
 
 code.language-text
   border initial !important
@@ -10,3 +14,8 @@ code.language-text
   box-shadow initial !important
   font-size 0.9em !important
 
+.outlined
+  border: 1px solid --outlined-color
+
+.shaded
+  border: 1px solid --shaded-color

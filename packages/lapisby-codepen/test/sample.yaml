@@ -1,0 +1,9 @@
+component: codepen
+id: 'codepen-typical'
+data:
+  height: 265 
+  theme-id: 0
+  default-tab: result
+  user: user
+  slug-hash: slug-xyz
+  pen-title: codepen title

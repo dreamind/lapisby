@@ -30,9 +30,14 @@ function md2html() {
   };
 }
 
-const BRACKETED = 1;
+// const BRACKETED = 1;
 const TRAILING = 2;
 
+/**
+ * Check for bracketed pattern
+ * 
+ * @param {*} node 
+ */
 function parseBracketed(node) {
   if (!node) {
     return null;
@@ -46,8 +51,10 @@ function parseBracketed(node) {
 
 /*
  * if a bracket span statement is found: returns an object
- * with id, classList, attr, and children properties
+ * with id, classNames, attrs, and elementName properties, where possible
  * else returns false
+ * 
+ * See propParser.js in packages/common
  */
 function parseMarkdown(node, index, parent, tree) {
   const { type, children } = node;
@@ -59,9 +66,10 @@ function parseMarkdown(node, index, parent, tree) {
   const matcher = sibling && parseBracketed(sibling);
   if (type && type === "linkReference" && matcher) {
     const text = children && children[0] && children[0].value;
-    const data = parse(matcher[0]);
-
-    data.text = text;
+    const data = parse(sibling.value); // leading{...}trailing
+    data.text = text;    
+    // matcher[BRACKETED] = {...}
+    // matcher[TRAILING] = trailing
     data.trailingText = matcher[TRAILING];
     data.html = createSpan(data);
     return data;
@@ -71,7 +79,7 @@ function parseMarkdown(node, index, parent, tree) {
 }
 
 function createSpan(data) {
-  const { classNames, text, id, attrs } = data;
+  const { classNames, text, id, attrs, elementName } = data;
   const classes = classNames ? classNames.join(" ") : "";
 
   const attributes = Object.keys(attrs)
@@ -80,11 +88,15 @@ function createSpan(data) {
     })
     .join(" ");
 
-  return `<span${id ? ` id="${id}"` : ""} ${
+  let el = elementName || "span";
+  return `<${el} ${id ? ` id="${id}"` : ""} ${
     classNames ? `class="${classes}"` : ""
-  } ${attributes || ""}>${text}</span>`;
+  } ${attributes || ""}>${text}</${el}>`;
 }
 
+/**
+ * TO DO: Support elementName
+ */
 function html2md() {
   return function transformer(tree) {
     visit(tree, visitor);
@@ -150,7 +162,7 @@ function hasDataAttr(props) {
   return false;
 }
 
-/* clean up md output */
+/* Clean up md output */
 function mdVisitors() {
   const processor = this;
   const Compiler = processor.Compiler;

@@ -1,0 +1,27 @@
+{
+  "name": "@lapisby/remark-prism",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "escape-html": "^1.0.3",
+    "prismjs": "^1.16.0",
+    "unist-util-visit": "^1.4.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dreamind/lapisby.git"
+  },
+  "keywords": [
+    "remark"
+  ],
+  "scripts": {
+    "test": "node test/index.js"
+  },
+  "author": "dreamind",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dreamind/lapisby/issues"
+  },
+  "homepage": "https://github.com/dreamind/lapisby"
+}

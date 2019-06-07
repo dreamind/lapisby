@@ -1,5 +1,5 @@
 {
-  "name": "remark-inline",
+  "name": "@lapisby/remark-inline",
   "version": "0.0.1",
   "description": "",
   "main": "index.js",

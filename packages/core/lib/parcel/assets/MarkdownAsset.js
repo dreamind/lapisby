@@ -21,14 +21,14 @@ class MarkdownAsset extends Asset {
     } else {
       conf = {}
     }
-    
+
     const explorer = cosmiconfig(moduleName)
     const config = explorer.searchSync().config
 
     if (config) {
       this.confs[moduleName] = config
       conf = config
-    } 
+    }
     return conf
   }
 
@@ -38,7 +38,9 @@ class MarkdownAsset extends Asset {
     let parcel = this.options
 
     return {
-      pug, lapisby, parcel
+      pug,
+      lapisby,
+      parcel,
     }
   }
 

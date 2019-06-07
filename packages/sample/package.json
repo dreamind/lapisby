@@ -1,0 +1,22 @@
+{
+  "name": "lapisby-sample",
+  "version": "1.0.0-beta.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "node --max_old_space_size=4096 index.js",
+    "build": "node --max_old_space_size=4096 index.js --build",
+    "clean": "rimraf .cache dist"
+  },
+  "devDependencies": {
+    "@lapisby/generator-codepen": "1.0.0-beta.1",
+    "@lapisby/generator-plotly": "1.0.0-beta.0",
+    "lapisby": "1.0.0-beta.0",
+    "postcss-cssnext": "^3.1.0",
+    "posthtml-include": "^1.2.0",
+    "prism-themes": "^1.1.0",
+    "pug": "^2.0.3",
+    "rimraf": "^2.6.3",
+    "sass": "^1.20.3"
+  }
+}

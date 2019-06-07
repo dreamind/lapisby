@@ -1,8 +1,7 @@
 // https://github.com/edwardtufte/tufte-css/blob/gh-pages/tufte.css
 // https://rstudio.github.io/tufte/
-
 @import 'variables'
-@import 'typography'  
+@import 'typography'
 
 --note-treshold-width ?= 600px
 --note-gutter-height ?= --gutter
@@ -11,11 +10,13 @@
 article
   position: relative
   padding: 0
+  width: 100%
 
 article > *
   width: --golden-ratio
   position: relative
   box-sizing: border-box
+  -margin-rhythm(4)
 
 article > *:last-child, article > div > *:last-child, article > p > *:last-child, .note > *:last-child
   margin-bottom: 0
@@ -35,9 +36,10 @@ article > *:first-child, article > div > *:first-child, article > p > *:first-ch
   margin-top: 0
   margin-bottom: --note-gutter-height
 
-.note > code[class*="language-"], pre[class*="language-"]
-  font-size: (--base-font-size / --perfect-fourth) !important
-  padding: --base-minor * 2 !important
+.note
+  > code[class*='language-'], pre[class*='language-']
+    font-size: (--base-font-size / --perfect-fourth) !important
+    padding: --base-minor * 2 !important
 
 .sidenote > *:first-child
   margin-top: 0
@@ -61,10 +63,11 @@ article > *:first-child, article > div > *:first-child, article > p > *:first-ch
 @media screen and (max-width: --note-treshold-width)
   .sidenote, .marginnote
     display: none
+
   article > *
     width: 100%
-// Structure
 
+// Structure
 .fullwidth
   width: 100%
 
@@ -76,25 +79,12 @@ img
 pre
   overflow: scroll
 
-code[class*="language-"]
+code[class*='language-']
   font-size: --inline-code-size
-  color: #1b8593 !important
-
-// checklist
-.checklist
-  padding-left: 20px
-  list-style: none
-
-.checklist li
-  margin-bottom: 10px
-
-.checklist libefore
-  font-family: FontAwesome
-  font-size: 11px
-  content: '\f096'
-  margin: 0 8px 0 -15px
-
+  font-style: normal
+  color: black !important
+  margin: 0 0.2rem
+  
 // https://rstudio.github.io/tufte/
 span.newthought
   font-variant: small-caps
-

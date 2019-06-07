@@ -1,7 +1,7 @@
 const { extend } = require('lodash')
 
 const ATTRS_RE = /(.*)\{(.+)\}/
-const ID_RE = /#(\w+)/
+const ID_RE = /(\w*)#(\w+)/
 const CLASS_RE = /\.\w+(-)?\w+/g
 const KV_RE = /(?:\w*=\s*(?:(?:"[^"]*")|(?:'[^']*')|[^}\s]+))/g
 
@@ -20,7 +20,8 @@ function extract(str) {
   }
 
   if (idMatch) {
-    data.id = idMatch[1]
+    data.elementName = idMatch[1]
+    data.id = idMatch[2]
   }
 
   if (classMatch) {
@@ -46,7 +47,7 @@ function extract(str) {
 function parse(str) {
   let attrsMatch = str.match(ATTRS_RE)
   if (attrsMatch) {
-    return extend({ name: attrsMatch[1] }, extract(attrsMatch[2]))
+    return extend({ leading: attrsMatch[1] }, extract(attrsMatch[2]))
   }
   return null
 }

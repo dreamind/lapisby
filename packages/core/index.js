@@ -41,10 +41,10 @@ async function main() {
     'md',
     require.resolve(CUSTOM_ASSETS_PATH + 'MarkdownAsset')
   )
-  bundler.addAssetType(
-    'html',
-    require.resolve(CUSTOM_ASSETS_PATH + 'HTMLAsset')
-  )
+  // bundler.addAssetType(
+  //   'html',
+  //   require.resolve(CUSTOM_ASSETS_PATH + 'HTMLAsset')
+  // )
 
   if (args[BUILD]) {
     console.log('Building parcel')
@@ -55,4 +55,8 @@ async function main() {
   }
 }
 
-main()
+module.exports = main
+
+if (require.main === module) {
+  main()
+}

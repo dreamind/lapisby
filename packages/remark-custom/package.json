@@ -1,0 +1,26 @@
+{
+  "name": "@lapisby/remark-custom",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+  },
+  "devDependencies": {
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dreamind/lapisby.git"
+  },
+  "keywords": [
+    "remark"
+  ],
+  "scripts": {
+    "test": "node test/index.js"
+  },
+  "author": "dreamind",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dreamind/lapisby/issues"
+  },
+  "homepage": "https://github.com/dreamind/lapisby"
+}

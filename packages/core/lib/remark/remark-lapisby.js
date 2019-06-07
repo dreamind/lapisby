@@ -1,66 +1,72 @@
 // const low = require('lowlight')
 const fs = require('fs')
-const short = require('short-uuid')
 const { merge, pick } = require('lodash')
 const visit = require('unist-util-visit')
 const is = require('unist-util-is')
 const yaml = require('yaml')
 const { YAML, CODE } = require('../common/constants')
-const plotlyGenerator = require('./generator/plotly')
+const { parse } = require('../../../common/propParser')
 
-module.exports = function (params) {
-  return ast => visit(ast, test, visitor)  
-  
+module.exports = function(params) {
+  return ast => visit(ast, test, visitor)
+
   function test(node) {
     return is(CODE, node) || is(YAML, node)
   }
 
-  function fmProcessor (content, params) {
+  function fmProcessor(content, params) {
     const frontmatter = yaml.parse(content)
     if (!frontmatter) {
       return
     }
-    const {
-      scripts = [],
-      styles = [],
-      theme,
-    } = frontmatter
+    //const { scripts = [], styles = [], theme } = frontmatter
     const data = params.data
     data.frontmatter = frontmatter
-    scripts.forEach(s => {
-      data.scripts.add(s)
-    })
-    styles.forEach(s => {
-      data.styles.add(s)
-    })    
-    let core = pick(frontmatter, ['title', 'template', 'theme', 'codeTheme', 'bibliography'])
+    // scripts.forEach(s => {
+    //   data.scripts.add(s)
+    // })
+    // styles.forEach(s => {
+    //   data.styles.add(s)
+    // })
+    let core = pick(frontmatter, [
+      'title',
+      'template',
+      'theme',
+      'codeTheme',
+      'bibliography',
+    ])
     merge(data, core)
-    // console.log(theme, data)
-    if (theme) {
-      data.styles.add(theme + '/fonts.css')
-      data.styles.add(theme + '/index.styl')
-    }
     return frontmatter
   }
 
-  function lapisbyRouter (content, params, node) {
+  function lapisbyRouter(content, params, node, data) {
     let config = yaml.parse(content)
     let { component } = config
-
-    if (component === 'plotly') {
-      return plotlyGenerator (config, params, node)
+    config.classNames = config.classNames || ''
+    if (data.classNames) {
+      config.classNames += ' ' + data.classNames.join(' ')
     }
-  }  
+    if (!config.id && data.id) {
+      config.id = data.id
+    }
+    const generators = params.confs.lapisby.generators || {}
+    const generator = generators[component]
+    if (generator) {
+      params.data.components[component] = 1
+      return generator(config, node)
+    }
+  }
 
   function visitor(node) {
     let { lang, value, meta, type } = node
-    let src, frontmatter = null
+    let src
+    let frontmatter = null
+    let data = {}
 
-    
     if (type === YAML) {
       // if frontmatter
       if (node.position.start.line === 1) {
-        frontmatter = fmProcessor (value, params)
+        frontmatter = fmProcessor(value, params)
         return
       }
     } else if (type === CODE) {
@@ -79,13 +85,13 @@ module.exports = function (params) {
         src = meta.match(/src=\"(.+)\"/)[1]
         value = fs.readFileSync(src).toString()
       } catch (e) {
-        // pass
+        data = parse(meta)
       }
     }
-    // no value either inline or externally 
+    // no value either inline or externally
     if (!value) {
       return
     }
-    lapisbyRouter (value, params, node)
+    lapisbyRouter(value, params, node, data)
   }
 }

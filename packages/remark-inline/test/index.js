@@ -7,15 +7,15 @@ const toHTML = require("remark-html");
 const toMarkdown = require("remark-stringify");
 const rehype = require("rehype");
 const rehype2remark = require("rehype-remark");
-const HtmlDiffer = require('@markedjs/html-differ').HtmlDiffer
+const HtmlDiffer = require("@markedjs/html-differ").HtmlDiffer;
 const inline = require("../index");
 
 function isEqual(html1, html2) {
   let htmlDiffer = new HtmlDiffer({ ignoreWhitespaces: true });
-  return htmlDiffer.isEqual(html1, html2)
+  return htmlDiffer.isEqual(html1, html2);
 }
 
-test("simple span", function(t) {
+test("simple inline", function(t) {
   const md = fs.readFileSync(path.join(__dirname, "simple.md"), "utf8");
   const html = remark()
     .use(inline)
@@ -38,14 +38,17 @@ test("simple span", function(t) {
   t.end();
 });
 
-test("nested span", function(t) {
+test("nested inline", function(t) {
   const md = fs.readFileSync(path.join(__dirname, "nested.md"), "utf8");
   const html = remark()
     .use(inline)
     .use(toHTML)
     .processSync(md)
     .toString();
-  const expectedHTML = fs.readFileSync(path.join(__dirname, "nested.html"), "utf8");
+  const expectedHTML = fs.readFileSync(
+    path.join(__dirname, "nested.html"),
+    "utf8"
+  );
   const outputMD = rehype()
     .use(inline.html2md)
     .use(rehype2remark)
@@ -53,7 +56,22 @@ test("nested span", function(t) {
     .use(inline.mdVisitors)
     .processSync(html)
     .toString();
-  t.ok(isEqual(html, expectedHTML));    
+  t.ok(isEqual(html, expectedHTML));
   t.equal(outputMD, md);
+  t.end();
+});
+
+test("full inline", function(t) {
+  const md = fs.readFileSync(path.join(__dirname, "full.md"), "utf8");
+  const html = remark()
+    .use(inline)
+    .use(toHTML)
+    .processSync(md)
+    .toString()
+    .trim();
+  const expectedHTML = fs
+    .readFileSync(path.join(__dirname, "full.html"), "utf8")
+    .trim();
+  t.equal(html, expectedHTML);
   t.end();
 });

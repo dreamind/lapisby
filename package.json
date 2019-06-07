@@ -1,6 +1,7 @@
 {
   "name": "lapisby",
   "devDependencies": {
+    "prettier-package-json": "^2.1.0",
     "stylus-supremacy": "^2.12.7"
   },
   "dependencies": {
