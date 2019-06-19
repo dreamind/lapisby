@@ -12,6 +12,7 @@ class MarkdownAsset extends Asset {
     this.processor = new MarkdownProcessor()
     this.hmrPageReload = true
     this.confs = {}
+    // console.log('Processing', this.name)
   }
 
   getExtConf(moduleName) {
@@ -32,13 +33,38 @@ class MarkdownAsset extends Asset {
     return conf
   }
 
+  async getConfig(filenames, opts = {}) {
+    console.log('<<<', this.name, filenames)
+    if (opts.packageKey) {
+      let pkg = await this.getPackage();
+      if (pkg && pkg[opts.packageKey]) {
+        return clone(pkg[opts.packageKey]);
+      }
+    }
+    
+    // Resolve the config file
+    let conf = await config.resolve(opts.path || this.name, filenames);
+    if (conf) {
+      // Add as a dependency so it is added to the watcher and invalidates
+      // this asset when the config changes.
+      this.addDependency(conf, {includedInParent: true});
+      if (opts.load === false) {
+        return conf;
+      }
+
+      return config.load(opts.path || this.name, filenames);
+    }
+
+    return null;
+  }
+
   getAllConfs() {
-    let pug = this.getExtConf('pug')
+    // let pug = this.getExtConf('pug')
     let lapisby = this.getExtConf('lapisby').lapisby
     let parcel = this.options
 
     return {
-      pug,
+      //pug,
       lapisby,
       parcel,
     }

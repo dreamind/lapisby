@@ -69,6 +69,7 @@ class MarkdownProcessor {
 
   themeHandler({ theme, styles }) {
     if (theme && styles) {
+      console.log(theme + '/fonts.css')
       styles.add(theme + '/fonts.css')
       styles.add(theme + '/index.styl')
     }
@@ -89,7 +90,7 @@ class MarkdownProcessor {
   }
 
   async generate(contents, confs = {}) {
-    let pugConf = confs.pug || {}
+    let pugConf = confs.pug
     let parcelConf = confs.parcel || {}
     let lapisbyConf = confs.lapisby || {}
     this.confs = confs
@@ -129,9 +130,9 @@ class MarkdownProcessor {
     let body = processor.processSync(contents).toString()
     let html
     let {
-      template,
-      theme,
-      codeTheme,
+      template = __dirname + '../templates/default.pug',
+      theme = 'lapisby/lib/themes/default',
+      codeTheme = 'prism-themes/themes/prism-xonokai.css',
       title = 'Untitled',
       bibliography,
       frontmatter = {},
@@ -141,6 +142,8 @@ class MarkdownProcessor {
       hasMath,
       components
     } = data
+    // Note that 'theme' and 'codeTheme' are using parcel path 
+    // resolution, while 'template' is resolved internally
     
     if (frontmatter) {
       this.styleHandler({ frontmatter, styles })
@@ -162,16 +165,21 @@ class MarkdownProcessor {
       }    
     })
   
-    if (lapisbyConf.templateEnabled && template) {
-      const compiled = pug.compile(fs.readFileSync(template).toString(), {
+    if (lapisbyConf.templateEnabled && template) {      
+      const pugOpts = {
         basedir: confs.basedir,
         compileDebug: false,
         filename: confs.name,
         pretty: !parcelConf.minify,
-        filters: pugConf.filters,
-        filterOptions: pugConf.filterOptions,
-        filterAliases: pugConf.filterAliases,
-      })
+      }
+      if (pugConf) {
+        merge(pugOpts, {
+          filters: pugConf.filters,
+          filterOptions: pugConf.filterOptions,
+          filterAliases: pugConf.filterAliases    
+        })
+      }
+      const compiled = pug.compile(fs.readFileSync(template).toString(), pugOpts)
       html = compiled({
         title,
         body,

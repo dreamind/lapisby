@@ -11,6 +11,7 @@
   "devDependencies": {
     "@lapisby/generator-codepen": "1.0.0-beta.1",
     "@lapisby/generator-plotly": "1.0.0-beta.0",
+    "@lapisby/fonclub": "1.0.0-beta.0",
     "lapisby": "1.0.0-beta.0",
     "postcss-cssnext": "^3.1.0",
     "posthtml-include": "^1.2.0",

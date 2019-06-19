@@ -1,8 +1,9 @@
 const Bundler = require('parcel-bundler')
-const { defaults } = require('lodash')
+const { defaults, map } = require('lodash')
 const path = require('path')
 const arg = require('arg')
 const cosmiconfig = require('cosmiconfig')
+const readdirp = require('readdirp');
 
 const BUILD = '--build'
 const args = defaults(
@@ -15,12 +16,31 @@ const args = defaults(
   }
 )
 
-const DEFAULT_ENTRY = './src/index.html'
+const DEFAULT_SOURCE = './src/'
+const DEFAULT_ENTRY = DEFAULT_SOURCE + 'index.html'
 const CUSTOM_ASSETS_PATH = './lib/parcel/assets/'
 
 async function main() {
+  
+  // let entryFiles = [ DEFAULT_ENTRY ];
+  // Print out all md files along with their size within the current folder & subfolders.
+  // await readdirp('./src', {fileFilter: '*.md', alwaysStat: true})
+  //   .on('data', (entry) => {
+  //     const {path, stats} = entry;
+  //     console.log(path);
+  //     entryFiles.push('.src/' + path)
+  //   })
+  //   // Optionally call stream.destroy() in `warn()` in order to abort and cause 'close' to be emitted
+  //   .on('warn', error => console.error('non-fatal error', error))
+  //   .on('error', error => console.error('fatal error', error))
+  //   .on('end', () => console.log('done'));
+
+  const files = await readdirp.promise(DEFAULT_SOURCE, {fileFilter: '*.md', alwaysStat: true});  
+  let entryFiles = files.map(file => DEFAULT_SOURCE + file.path);
+  entryFiles.push(DEFAULT_ENTRY)
+
   let options = {}
-  let entryFiles = path.join(__dirname, DEFAULT_ENTRY)
+  // entryFiles = map(entryFiles, (entry) => path.join(__dirname, entry))
   const explorer = cosmiconfig('lapisby')
   const config = explorer.searchSync().config
 
@@ -35,16 +55,14 @@ async function main() {
     }
   }
 
+  console.log(entryFiles)
+
   // Initializes a bundler using the entry files options provided
   const bundler = new Bundler(entryFiles, options)
   bundler.addAssetType(
     'md',
     require.resolve(CUSTOM_ASSETS_PATH + 'MarkdownAsset')
   )
-  // bundler.addAssetType(
-  //   'html',
-  //   require.resolve(CUSTOM_ASSETS_PATH + 'HTMLAsset')
-  // )
 
   if (args[BUILD]) {
     console.log('Building parcel')

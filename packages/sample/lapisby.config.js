@@ -5,7 +5,7 @@ module.exports = {
   // Entry point file location for parcel
   // OR: Multiple files with globbing: './src/*.js'
   // OR: Multiple files in an array: ['./src/index.html', './some/other/directory/scripts.js']
-  entryFiles: ['./src/index.html'],
+  // entryFiles: ['./src/index.html'],
 
   parcel: {
     outDir: './dist', // The out directory to put the build files in, defaults to dist
@@ -32,6 +32,7 @@ module.exports = {
   },
 
   lapisby: {
+    extSource: 'cdn',
     templateEnabled: true,
     bibliographyEnabled: true,
     citation: {
@@ -55,12 +56,15 @@ module.exports = {
       codepen: {
         cdn: {
           js: '//static.codepen.io/assets/embed/ei.js',
-        },
+        }
       },
       katex: {
         cdn: {
           css: '//cdn.jsdelivr.net/npm/katex@0.10.0/dist/katex.min.css',
         },
+        local: {
+          css: 'lapisby/node_modules/katex/dist/katex.min.css'
+        }
       },
       highlight: {
         cdn: {
@@ -68,6 +72,9 @@ module.exports = {
           css:
             '//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/monokai-sublime.min.css',
         },
+        local: {
+          css: 'lapisby/node_modules/highlight.js/styles/monokai-sublime.css'
+        }
       },
       plotly: {
         cdn: {

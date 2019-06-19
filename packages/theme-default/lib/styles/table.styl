@@ -1,0 +1,34 @@
+@import 'variables'
+@import 'vertical-rhythm'
+
+--table-border-vertical-color = rgb(0.4, 0.4, 0.4)
+--table-heading-bgcolor = #cccccc
+--table-cell-bgcolor = #f0f0f0
+
+table
+  -margin-rhythm(4, 4)
+  text-align: left
+  border-top: 1px solid --table-border-vertical-color
+  border-bottom: 1px solid --table-border-vertical-color
+  border-collapse: collapse
+  font-feature-settings: 'tnum' // enable tabular (monospaced) figures
+
+// maximize table nested within div 
+article > * table
+  width: 100%
+
+thead th
+  background-color: --table-heading-bgcolor
+  font-weight: 700
+  border-collapse: collapse
+
+td, th
+  padding: --base-minor (--base-minor * 2)
+
+td
+  background-color: --table-cell-bgcolor
+  border-top: 1px solid white
+
+.flat
+  table
+    border: none

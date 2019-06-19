@@ -1,0 +1,17 @@
+doctype html
+html
+  head
+    title #{title}
+    meta(charset="utf8")
+    each style in styles
+      link(href=style, rel="stylesheet")
+    each script in scripts
+      script(defer, src=script)
+
+  body
+    header
+    article(id="tufte_container") !{body}
+    // include /../../components/code.html
+    // include /../../components/math.html
+    footer
+    // script(defer="defer",src="../../lib/copy.js")

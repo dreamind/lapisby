@@ -1,0 +1,26 @@
+## Code Block
+
+Inline code block: `lorem` ipsum dolor sit amet, `consectetur adipiscing` elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+```js url="src/resources/codes/sample.js"
+```
+
+```css
+h1 {
+  color: red;
+}
+```
+
+```html
+<h1></h2>
+```
+
+```javascript
+const path = require('path')
+const fs = require('fs')
+const { Asset } = require('parcel-bundler')
+const remark = require('remark')
+const math = require('remark-math')
+const katex = require('remark-html-katex')
+const html = require('remark-html')
+```
