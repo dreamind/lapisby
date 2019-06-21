@@ -1,0 +1,7 @@
+{
+  "name": "@lapisby/theme-base",
+  "version": "1.0.0-beta.0",
+  "dependencies": {
+    "colors.css": "^3.0.0"
+  }
+}

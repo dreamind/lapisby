@@ -4,6 +4,7 @@ const path = require('path')
 const arg = require('arg')
 const cosmiconfig = require('cosmiconfig')
 const readdirp = require('readdirp');
+// const downloader = require('./lib/fonts/downloader')
 
 const BUILD = '--build'
 const args = defaults(
@@ -22,6 +23,8 @@ const CUSTOM_ASSETS_PATH = './lib/parcel/assets/'
 
 async function main() {
   
+  // downloader()
+
   // let entryFiles = [ DEFAULT_ENTRY ];
   // Print out all md files along with their size within the current folder & subfolders.
   // await readdirp('./src', {fileFilter: '*.md', alwaysStat: true})
@@ -63,7 +66,10 @@ async function main() {
     'md',
     require.resolve(CUSTOM_ASSETS_PATH + 'MarkdownAsset')
   )
-
+  bundler.addAssetType(
+    'json', 
+    require.resolve(CUSTOM_ASSETS_PATH + 'JSONAsset')
+  )
   if (args[BUILD]) {
     console.log('Building parcel')
     await bundler.bundle()

@@ -1,0 +1,30 @@
+{
+  "name": "@lapisby/generator-d3",
+  "version": "1.0.0-beta.0",
+  "description": "remark-based generator for d3",
+  "main": "index.js",
+  "dependencies": {
+    "lodash": "^4.17.11",
+    "short-uuid": "^3.1.1"
+  },
+  "devDependencies": {
+    "yaml": "^1.6.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dreamind/lapisby.git"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "remark",
+    "d3"
+  ],
+  "author": "dreamind",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dreamind/lapisby/issues"
+  },
+  "homepage": "https://github.com/dreamind/lapisby"
+}

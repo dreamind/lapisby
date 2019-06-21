@@ -52,7 +52,7 @@ module.exports = function(params) {
     const generators = params.confs.lapisby.generators || {}
     const generator = generators[component]
     if (generator) {
-      params.data.components[component] = 1
+      params.data.components[component] = config
       return generator(config, node)
     }
   }

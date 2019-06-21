@@ -1,4 +1,8 @@
 {
   "name": "@lapisby/fonclub",
-  "version": "1.0.0-beta.0"
+  "version": "1.0.0-beta.0",
+  "devDependencies": {
+    "readdirp": "^3.0.2",
+    "font-informer": "^1.0.2"
+  }
 }

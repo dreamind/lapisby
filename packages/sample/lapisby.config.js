@@ -1,5 +1,6 @@
 const codepenGenerator = require('@lapisby/generator-codepen')
 const plotlyGenerator = require('@lapisby/generator-plotly')
+const d3Generator = require('@lapisby/generator-d3')
 
 module.exports = {
   // Entry point file location for parcel
@@ -35,6 +36,7 @@ module.exports = {
     extSource: 'cdn',
     templateEnabled: true,
     bibliographyEnabled: true,
+    resourcePath: 'resources',
     citation: {
       format: 'html',
       template: 'apa',
@@ -43,6 +45,7 @@ module.exports = {
     generators: {
       codepen: codepenGenerator,
       plotly: plotlyGenerator,
+      d3: d3Generator.generator,
     },
     blocks: {
       epigraph: {
@@ -58,6 +61,9 @@ module.exports = {
           js: '//static.codepen.io/assets/embed/ei.js',
         }
       },
+      d3: {
+         cdn: d3Generator.config 
+      },   
       katex: {
         cdn: {
           css: '//cdn.jsdelivr.net/npm/katex@0.10.0/dist/katex.min.css',

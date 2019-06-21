@@ -2,30 +2,26 @@
   font-family: 'TeX Gyre Pagella';
   font-style: normal;
   font-weight: 400;
-  src: local('TeX Gyre Pagella Regular'), local('TeXGyrePagella-Regular'),
-    url('./texgyrepagella-regular.otf');
+  src: url('./texgyrepagella-regular.otf');
 }
 
 @font-face {
   font-family: 'TeX Gyre Pagella';
   font-style: italic;
   font-weight: 400;
-  src: local('TeX Gyre Pagella Italic'), local('TeXGyrePagella-Italic'),
-    url('./texgyrepagella-italic.otf');
+  src: url('./texgyrepagella-italic.otf');
 }
 
 @font-face {
   font-family: 'TeX Gyre Pagella';
   font-style: normal;
   font-weight: 700;
-  src: local('TeX Gyre Pagella Bold'), local('TeXGyrePagella-Bold'),
-    url('./texgyrepagella-bold.otf');
+  src: url('./texgyrepagella-bold.otf');
 }
 
 @font-face {
   font-family: 'TeX Gyre Pagella';
   font-style: italic;
   font-weight: 700;
-  src: local('TeX Gyre Pagella Bold Italic'), local('TeXGyrePagella-BoldItalic'),
-    url('./texgyrepagella-bolditalic.otf');
+  src: url('./texgyrepagella-bolditalic.otf');
 }

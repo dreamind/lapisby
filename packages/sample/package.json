@@ -9,15 +9,19 @@
     "clean": "rimraf .cache dist"
   },
   "devDependencies": {
+    "@lapisby/fonclub": "1.0.0-beta.0",
     "@lapisby/generator-codepen": "1.0.0-beta.1",
     "@lapisby/generator-plotly": "1.0.0-beta.0",
-    "@lapisby/fonclub": "1.0.0-beta.0",
+    "@lapisby/generator-d3": "1.0.0-beta.0",
+    "@lapisby/theme-tufte-one": "1.0.0-beta.0",
     "lapisby": "1.0.0-beta.0",
-    "postcss-cssnext": "^3.1.0",
+    "postcss-preset-env": "^6.6.0",
     "posthtml-include": "^1.2.0",
     "prism-themes": "^1.1.0",
     "pug": "^2.0.3",
     "rimraf": "^2.6.3",
     "sass": "^1.20.3"
+  },
+  "dependencies": {
   }
 }

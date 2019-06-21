@@ -74,7 +74,7 @@ class MarkdownAsset extends Asset {
     let name = this.name
     let basedir = path.dirname(this.name)
     let confs = extend(this.getAllConfs(), { basedir, name })
-
+    console.log('Processing ...', name)
     let r = await this.processor.generate(this.contents, confs)
 
     return [

@@ -4,13 +4,14 @@ authors:
   - Ivo Widjaja
   - Amadeus Huang
 template: ./src/templates/user.pug
-theme: /themes/user
+typefaces:
+  - pagella
+theme: @lapisby/theme-tufte-one
 codeTheme: prism-themes/themes/prism-xonokai.css
 tags: [one, two]
 scripts:
   - ../../lib/user.js
-  - //d3js.org/d3.v3.min.js
-  - ./../../resources/components/d3-collisions.js
+  - //d3js.org/d3.v5.min.js  
 obj:
   - prop1: val1
   - test2
@@ -21,15 +22,10 @@ obj:
 :::{.epigraph}
 The English language .. becomes ugly and inaccurate because our thoughts are foolish, but the slovenliness of our language makes it easier for us to have foolish thoughts.
 
-The English language .. becomes ugly and inaccurate because our thoughts are foolish, but the slovenliness of our language makes it easier for us to have foolish thoughts.
-
 [George Orwell, Politics and the English Language]{.footer}
 :::
 
 ## First Level Heading: A rather lengthy heading should have consistent line-spacing with the body
-
-<div id="d3"></div>
-
 
 
 

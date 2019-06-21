@@ -1,0 +1,8 @@
+{
+  "name": "@lapisby/theme-tufte-one",
+  "version": "1.0.0-beta.0",
+  "dependencies": {
+    "@lapisby/theme-base": "1.0.0-beta.0"
+  },
+  "main": "index.js"
+}

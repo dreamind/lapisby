@@ -1,9 +1,10 @@
 const fs = require('fs')
-const { extend, get, each, keys } = require('lodash')
+const { extend, get, each, isString } = require('lodash')
 const unified = require('unified')
 const yaml = require('yaml').parse
 const pug = require('pug')
 const Cite = require('citation-js')
+const gitCopy = require('github-download-parts');
 
 const markdown = require('remark-parse')
 const remarkMath = require('remark-math')
@@ -18,7 +19,7 @@ const remarkCustom = require('@lapisby/remark-custom')
 const remarkPrism = require('@lapisby/remark-prism')
 const remarkLapisby = require('../remark/remark-lapisby')
 const inspector = require('../remark/remark-inspector')
-
+const localRequire = require('parcel-bundler/src/utils/localRequire')
 // const remarkHighlightX = require('../remark/remark-ext-code')
 
 const BIB_MARKER = '<h2>References</h2>'
@@ -61,17 +62,53 @@ class MarkdownProcessor {
 
   codeHandler({ hasCode, codeTheme, styles }) {
     if (hasCode) {
-      styles.add('../../../node_modules/' + codeTheme)
+      console.log(codeTheme)
+      //styles.add(codeTheme)
+      styles.add('/../node_modules/' + codeTheme)
       // link(href="../../../node_modules/prismjs/themes/prism-dark.css", rel="stylesheet")
       // link(href="../../../node_modules/prism-themes/themes/prism-xonokai.css", rel="stylesheet")
     }
   }
 
-  themeHandler({ theme, styles }) {
+  fontsHandler({ typefaces, styles }) {
+    if (typefaces && styles) {
+
+      typefaces.forEach((font) => {
+        styles.add( '/resources/fonts/' + font + '/fonts.css')
+        // if (!theme.startsWith('.') && !theme.startsWith('/')) {
+        //   styles.add('/../node_modules/' + theme + '/index.styl')
+        // } else {
+        //   styles.add(theme + '/index.styl')
+        // }      
+      })
+      // console.log(theme + '/fonts.css')
+      // styles.add(theme + '/fonts.css')
+    }
+  }
+
+  async themeHandler({ theme, styles, target }) {
     if (theme && styles) {
-      console.log(theme + '/fonts.css')
-      styles.add(theme + '/fonts.css')
-      styles.add(theme + '/index.styl')
+      // console.log(theme + '/fonts.css')
+      // styles.add(theme + '/fonts.css')
+      if (!theme.startsWith('.') && !theme.startsWith('/')) {
+        styles.add('/../node_modules/' + theme + '/index.styl')
+        // let y = await localRequire(theme)
+        // console.log(y)
+        //console.log('theme', theme)
+        let themeModule = await localRequire(theme, 'node_modules')
+        let fonts = themeModule && themeModule.fonts
+        if (fonts) {
+          let resourcePath = get(this.confs.lapisby, 'resourcePath')
+          let rootDir = get(this.confs.parcel, 'rootDir')
+          each(fonts, async function(font) {
+            console.log(font.repo, rootDir + '/' + resourcePath + '/fonts/' + font.name, font.path)
+            await gitCopy(font.repo, rootDir + '/' + resourcePath + '/fonts/' + font.name, font.path)
+            styles.add( '/' + resourcePath + '/fonts/' + font.name + '/fonts.css')
+          })          
+        }
+      } else {
+        styles.add(theme + '/index.styl')
+      }     
     }
   }
 
@@ -93,6 +130,8 @@ class MarkdownProcessor {
     let pugConf = confs.pug
     let parcelConf = confs.parcel || {}
     let lapisbyConf = confs.lapisby || {}
+    let { resourcePath } = lapisbyConf
+    let { rootDir } = parcelConf
     this.confs = confs
 
     let data = {
@@ -100,7 +139,7 @@ class MarkdownProcessor {
       styles: new Set(),
       components: {},
       template: null,
-      theme: null,
+      theme: null,      
       codeTheme: null,
       bibliography: null,
       frontmatter: null,
@@ -145,24 +184,36 @@ class MarkdownProcessor {
     // Note that 'theme' and 'codeTheme' are using parcel path 
     // resolution, while 'template' is resolved internally
     
+    let typefaces
     if (frontmatter) {
+      typefaces = frontmatter.typefaces
       this.styleHandler({ frontmatter, styles })
       this.scriptHandler({ frontmatter, scripts })
     }
     this.codeHandler({ hasCode, codeTheme, styles })
     this.mathHandler({ hasMath, styles })
-    this.themeHandler({ theme, styles })
+    if (typefaces) {
+      // this.fontsHandler({ typefaces, styles })  
+    }
+    await this.themeHandler({ theme, styles })
 
-    each (keys(components), function (component) {
+    each (components, function (config, component) {
       const source = get(lapisbyConf, ['ext', component, 'cdn'])
-      const script = get(source, 'js')
-      const style = get(source, 'css')
+      const { version } = config
+      let script = get(source, 'js')
+      if (!isString(script)) {        
+        if (!version) {
+          version = 'default'
+        }
+        script = script[version]
+      }
+      let style = get(source, 'css')
       if (script) {
         scripts.add(script)
       }
       if (style) {
         styles.add(style)
-      }    
+      }
     })
   
     if (lapisbyConf.templateEnabled && template) {      

@@ -1,7 +1,0 @@
-{
-  "name": "@lapisby/theme-default",
-  "version": "1.0.0-beta.0",
-  "devDependencies": {
-    "@lapisby/fonclub": "1.0.0-beta.0"
-  }
-}
